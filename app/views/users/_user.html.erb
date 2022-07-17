@@ -1,3 +1,15 @@
 <li>
-  <p><%= user.email %></p>
+  <p>
+    <%= user.email %>
+    <% if @users_ids_associated_requests.any? { |ids| ids.include?(user.id)} %>
+      <%# TODO if pending request %>
+        <%# cancel button %>
+      <%# end %>
+    <% else %>
+      <%= form_with model: FriendRequest.new do |form| %>
+        <%= form.hidden_field :friend_id, value: user.id %>
+        <%= form.submit 'Add friend' %>
+      <% end %>
+    <% end %>
+  </p>
 </li>

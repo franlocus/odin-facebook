@@ -7,6 +7,6 @@ class Friendship < ApplicationRecord
   after_create :create_inverse
 
   def create_inverse
-    self.class.create(user_id: friend.id, friend_id: user.id)
+    Friendship.create(user_id: friend.id, friend_id: user.id, inverse: true)
   end
 end

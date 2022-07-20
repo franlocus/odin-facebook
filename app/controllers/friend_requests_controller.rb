@@ -4,17 +4,34 @@ class FriendRequestsController < ApplicationController
     @friend_request[:status] = 'pending'
 
     if @friend_request.save
-      redirect_to users_path, notice: 'Great! Now the user need to confirm your friend request :)!'
+      flash[:notice] = 'Great! Now the user need to confirm your friend request :)!'
     else
-      redirect_to users_path, notice: 'Something went wrong'
+      flash[:alert] = 'Something went wrong'
     end
+    redirect_to users_path
+  end
+
+  def update
+    @friend_request = FriendRequest.find(params[:id])
+
+    if @friend_request.update(status: 'accepted')
+      flash[:notice] = 'Now you are friends! Great :)!'
+    else
+      flash[:alert] = 'Something went wrong'
+    end
+    redirect_to users_path
   end
 
   def destroy
     @friend_request = FriendRequest.find(params[:id])
-    @friend_request.destroy
 
-    redirect_to users_path, notice: 'Request canceled successfully '
+    if @friend_request.status == 'accepted'
+      flash[:alert] = 'The request was already accepted!'
+    else
+      flash[:notice] = 'Request canceled successfully'
+      @friend_request.destroy
+    end
+    redirect_to users_path
   end
 
   private

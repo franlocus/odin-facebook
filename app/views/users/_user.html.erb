@@ -2,8 +2,13 @@
   <p>
     <%= user.email %>
     <% if (fr = @sended_and_received_requests.find { |fr| fr.user_id == current_user.id && fr.friend_id == user.id }) %>
-    <%# TODO if inverse accept friend request%>
-      <% unless fr.inverse? %>
+      <% if fr.status == 'accepted' %>
+        <strong>Friend</strong>
+      <% elsif fr.inverse? %>
+        <%= form_with model: fr do |form| %>
+          <%= form.submit "Accept request" %>
+        <% end %>
+      <% else %>
         <%= form_with url: friend_request_path(fr), method: :delete do |form| %>
           <%= form.submit "Cancel request" %>
         <% end %>

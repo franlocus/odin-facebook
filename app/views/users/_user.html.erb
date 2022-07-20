@@ -1,10 +1,13 @@
 <li>
   <p>
     <%= user.email %>
-    <% if @users_ids_associated_requests.any? { |ids| ids.include?(user.id)} %>
-      <%# TODO if pending request %>
-        <%# cancel button %>
-      <%# end %>
+    <% if (fr = @sended_and_received_requests.find { |fr| fr.user_id == current_user.id && fr.friend_id == user.id }) %>
+    <%# TODO if inverse accept friend request%>
+      <% unless fr.inverse? %>
+        <%= form_with url: friend_request_path(fr), method: :delete do |form| %>
+          <%= form.submit "Cancel request" %>
+        <% end %>
+      <% end %>
     <% else %>
       <%= form_with model: FriendRequest.new do |form| %>
         <%= form.hidden_field :friend_id, value: user.id %>

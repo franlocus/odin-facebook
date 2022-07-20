@@ -10,4 +10,8 @@ class User < ApplicationRecord
 
   has_many :friendships, dependent: :destroy
   has_many :friends, through: :friendships
+
+  def sended_and_received_requests
+    sended_requests.or(received_requests)
+  end
 end

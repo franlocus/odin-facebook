@@ -10,6 +10,13 @@ class FriendRequestsController < ApplicationController
     end
   end
 
+  def destroy
+    @friend_request = FriendRequest.find(params[:id])
+    @friend_request.destroy
+
+    redirect_to users_path, notice: 'Request canceled successfully '
+  end
+
   private
 
   def friend_request_params

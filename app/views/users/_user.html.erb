@@ -7,16 +7,16 @@
          <strong>Friend</strong>
          <%= form.submit 'Delete friend' %>
         <% end %>
-      <% elsif friendship.inverse? %>
-        <%= form_with model: friendship do |form| %>
-          <%= form.submit 'Accept request' %>
-        <% end %>
       <% else %>
+        <% if friendship.inverse? %>
+          <%= form_with model: friendship do |form| %>
+            <%= form.submit 'Accept request' %>
+          <% end %>
+        <% end %>
         <%= form_with model: friendship, method: :delete do |form| %>
-          <%= form.submit 'Cancel request' %>
+          <%= form.submit friendship.inverse? ? 'Decline request' : 'Cancel request' %>
         <% end %>
       <% end %>
-
     <% else %>
       <%= form_with model: Friendship.new do |form| %>
         <%= form.hidden_field :friend_id, value: user.id %>

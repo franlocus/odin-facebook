@@ -3,7 +3,20 @@
 one:
   user: one
   friend: two
+  accepted: false
+
+one_inverse:
+  user: two
+  friend: one
+  accepted: false
+  inverse: true
 
 two:
   user: two
   friend: one
+  accepted: false
+
+two_inverse:
+  user: one
+  friend: two
+  accepted: false

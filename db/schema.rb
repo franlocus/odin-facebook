@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_23_005201) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_11_161104) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,21 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_23_005201) do
     t.boolean "accepted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "inverse", default: false
     t.index ["friend_id"], name: "index_friendships_on_friend_id"
     t.index ["user_id"], name: "index_friendships_on_user_id"
-  end
-
-  create_table "notifications", force: :cascade do |t|
-    t.string "message"
-    t.boolean "read"
-    t.bigint "user_id", null: false
-    t.string "notifiable_type", null: false
-    t.bigint "notifiable_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -51,5 +38,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_23_005201) do
 
   add_foreign_key "friendships", "users"
   add_foreign_key "friendships", "users", column: "friend_id", on_delete: :cascade
-  add_foreign_key "notifications", "users"
 end

@@ -1,25 +1,25 @@
 <li>
   <p>
-    <%= user.email %>
-    <% if (friendship = @friendships.find { |f| f.user_id == current_user.id && f.friend_id == user.id}) %>
+    <%= other_user.email %>
+    <% if (friendship = @friendships.find { |f| [current_user.id, other_user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
       <% if friendship.accepted? %>
        <%= form_with model: friendship, method: :delete do |form| %>
          <strong>Friend</strong>
          <%= form.submit 'Delete friend' %>
         <% end %>
       <% else %>
-        <% if friendship.inverse? %>
+        <% if should_accept = friendship.friend_id == current_user.id  %>
           <%= form_with model: friendship do |form| %>
             <%= form.submit 'Accept request' %>
           <% end %>
         <% end %>
         <%= form_with model: friendship, method: :delete do |form| %>
-          <%= form.submit friendship.inverse? ? 'Decline request' : 'Cancel request' %>
+          <%= form.submit should_accept ? 'Decline request' : 'Cancel request' %>
         <% end %>
       <% end %>
     <% else %>
       <%= form_with model: Friendship.new do |form| %>
-        <%= form.hidden_field :friend_id, value: user.id %>
+        <%= form.hidden_field :friend_id, value: other_user.id %>
         <%= form.submit 'Add friend' %>
       <% end %>
     <% end %>

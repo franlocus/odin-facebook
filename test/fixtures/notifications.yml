@@ -1,15 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  message: MyString
+  action: MyString
+  actor: one
+  recipient: one
   read: false
-  user: one
   notifiable: one
   notifiable_type: Notifiable
 
 two:
-  message: MyString
+  action: MyString
+  actor: two
+  recipient: two
   read: false
-  user: two
   notifiable: two
   notifiable_type: Notifiable

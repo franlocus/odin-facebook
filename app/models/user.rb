@@ -11,6 +11,8 @@ class User < ApplicationRecord
 
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
 
+  has_many :posts, dependent: :destroy
+
   def friendships
     received_friendships.or(sent_friendships)
   end

@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
   resources :friendships, only: [:create, :update, :destroy]
   resources :posts, only: [:index, :create]
+  resources :likes, only: [:create, :destroy]
 end

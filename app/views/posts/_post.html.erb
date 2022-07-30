@@ -2,6 +2,14 @@
   <p>
     <%= post.author.email %>
     <br>
-    Published -> <%= post.content %> 
+    Published -> <%= post.content %> <br>
+    <%# TODO: show users liking and count %>
+    
+    <% current_user_like = @current_user_likes_posts_ids.find { |_like_id, post_id| post_id == post.id} %>
+    <% if current_user_like.nil? %> 
+      <%= button_to 'Like', likes_path, params: { like: { post_id: post.id }}, method: :post %>
+    <% else %> 
+      <%= button_to 'Unlike', like_path(current_user_like), method: :delete %>
+    <% end %> 
   </p>
 </li>

@@ -3,9 +3,7 @@
     <summary>[Notifications <%= @current_user_unread_notifications_count %>]</summary>
     <% @current_user_notifications.each do |notification| %>
       <div>
-        <%# TODO: better text schema %>
-        New <%= notification.action %>
-        <%= notification.action =~ /Request/ ? 'from' : '' %> <%= notification.actor.email %>
+        <%= notification.body %>
       </div>
     <% end %>
   </details>

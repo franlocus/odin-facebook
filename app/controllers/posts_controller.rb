@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.includes(:author, :likes).all
+    @posts = Post.includes(:author, :likes).order(created_at: :DESC)
     @post = Post.new
     @current_user_likes_posts_ids = current_user.likes.pluck(:id, :post_id)
   end

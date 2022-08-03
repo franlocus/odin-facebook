@@ -5,8 +5,9 @@ class ApplicationController < ActionController::Base
   def set_current_user_notifications
     return unless user_signed_in?
 
-    @current_user_unread_notifications_count = current_user.notifications.unread.count
+    @current_user_notifications = current_user.notifications.order(created_at: :desc).pluck(:body, :read)
+    return if @current_user_notifications.all? { |_body, read| read }
+
     current_user.notifications.unread.update_all(read: true)
-    @current_user_notifications = current_user.notifications
   end
 end

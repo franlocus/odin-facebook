@@ -1,9 +1,10 @@
 <div>
   <details>
-    <summary>[Notifications <%= @current_user_unread_notifications_count %>]</summary>
-    <% @current_user_notifications.each do |notification| %>
+    <summary>[Notifications <%= @current_user_notifications.count { |_body, read| !read } %>]</summary>
+    <% @current_user_notifications.each do |body, read| %>
       <div>
-        <%= notification.body %>
+        <%= tag.strong 'Unread!' unless read %>
+        <%= body %>
       </div>
     <% end %>
   </details>

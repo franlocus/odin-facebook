@@ -1,22 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
-  friend: two
-  accepted: false
+first_with_second_true:
+  sent_friendship: first
+  received_friendship: second
+  accepted: true
 
-one_inverse:
-  user: two
-  friend: one
-  accepted: false
-  inverse: true
-
-two:
-  user: two
-  friend: one
-  accepted: false
-
-two_inverse:
-  user: one
-  friend: two
-  accepted: false
+second_with_third_true:
+  sent_friendship: second
+  received_friendship: third
+  accepted: true

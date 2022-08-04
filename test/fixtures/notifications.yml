@@ -1,17 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  action: MyString
-  actor: one
-  recipient: one
+  action: Friend Request
+  actor: first
+  recipient: second
   read: false
-  notifiable: one
-  notifiable_type: Notifiable
+  notifiable: first_with_second_true
+  notifiable_type: Friendship
 
 two:
-  action: MyString
-  actor: two
-  recipient: two
+  action: Friendship
+  actor: second
+  recipient: first
   read: false
-  notifiable: two
-  notifiable_type: Notifiable
+  notifiable: first_with_second_true
+  notifiable_type: Friendship

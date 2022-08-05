@@ -2,11 +2,11 @@ require "test_helper"
 
 class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    sign_in users(:one)
+    sign_in users(:first)
   end
 
   test "redirected if not logged in" do
-    sign_out :user
+    sign_out users(:first)
 
     get root_path
     assert_response :redirect

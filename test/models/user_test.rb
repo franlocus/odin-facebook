@@ -34,4 +34,10 @@ class UserTest < ActiveSupport::TestCase
       users(:first).destroy
     end
   end
+
+  test '#comments' do
+    first_user_comments = users.first.comments
+    users.first.destroy
+    assert_empty first_user_comments
+  end
 end

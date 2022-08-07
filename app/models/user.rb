@@ -4,10 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :friendships, dependent: :destroy
-
-  has_many :sent_friendships, class_name: 'Friendship', foreign_key: :user_id
-  has_many :received_friendships, class_name: 'Friendship', foreign_key: :friend_id
+  has_many :sent_friendships, class_name: 'Friendship', foreign_key: :user_id, dependent: :destroy
+  has_many :received_friendships, class_name: 'Friendship', foreign_key: :friend_id, dependent: :destroy
 
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
 
@@ -19,7 +17,12 @@ class User < ApplicationRecord
     received_friendships.or(sent_friendships)
   end
 
+  def accepted_friendships
+    friendships.where(accepted: true)
+  end
+
   def friends
-    friendships.where('accepted = true')
+    friends_ids = accepted_friendships.pluck(:user_id, :friend_id).flatten.reject { |user_id| user_id == id }
+    User.where.not(id: id).where(id: friends_ids)
   end
 end

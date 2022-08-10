@@ -1,0 +1,11 @@
+  <% if flash[:comment_errors] %>
+        <% flash[:comment_errors].each do |error| %>
+          <p><%= error %></p>
+        <% end %>
+  <% end %>
+  <%= form_with model: Comment.new do |form| %>
+    <%= form.hidden_field :post_id, value: post.id %>
+    <%= form.label :body, 'Comment body' %> <br>
+    <%= form.text_field :body %> <br><br>
+    <%= form.submit %> 
+  <% end %>

@@ -1,8 +1,13 @@
 class PostsController < ApplicationController
   def index
-    @posts = Post.includes(:author, :likes).order(created_at: :DESC)
+    @posts = Post.includes(:author, :comments).order(created_at: :DESC)
     @post = Post.new
     @current_user_likes_posts_ids = current_user.likes.pluck(:id, :post_id)
+  end
+
+  def show
+    @post = Post.includes(comments: :commenter).find(params[:id])
+    @current_user_post_like = Like.where('user_id = ? AND post_id = ?', current_user.id, params[:id]).take
   end
 
   def create

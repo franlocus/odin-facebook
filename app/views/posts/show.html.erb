@@ -1,0 +1,16 @@
+<h2><%= @post.author.email %> said:</h2>
+<h4><%= @post.content %></h4>
+<br>    
+Liked by -> <%= @post.likes_count.zero? ? 'nobody :(' : pluralize(@post.likes_count, 'person') %>
+
+<% if @current_user_post_like.nil? %> 
+  <%= button_to 'Like', likes_path, params: { like: { post_id: @post.id }}, method: :post %>
+<% else %> 
+  <%= button_to 'Unlike', like_path(@current_user_post_like), method: :delete %>
+<% end %> <br>
+
+<% empty_comments_msg = "<p>+ This post doesn't have comments yet.<br><strong>+ You can be the first!</strong></p>" %>
+<%= render(@post.comments) || simple_format(empty_comments_msg) %>    
+
+<%= render 'comments/form', post: @post %>
+

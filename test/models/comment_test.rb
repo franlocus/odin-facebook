@@ -22,4 +22,13 @@ class CommentTest < ActiveSupport::TestCase
     assert_includes posts(:one).comments, comments.first
     assert_equal 'This is post ONE', comments.first.post.content
   end
+
+  test '#create_notification_for_author_and_commenters' do
+    users.first.notifications.delete_all
+    assert_changes 'users.first.notifications.unread.size' do
+      assert posts.first.comments.create(commenter: users.second, body: 'nice work')
+      assert posts.first.comments.create(commenter: users.third, body: 'amazing!')
+    end
+    assert_equal 2, users.first.notifications.unread.size
+  end
 end

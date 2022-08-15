@@ -7,3 +7,8 @@ one:
 two:
   content: I'm post two
   author: second
+
+three:
+  content: I'm post three authored by user third
+  author: third
+

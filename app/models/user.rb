@@ -22,7 +22,16 @@ class User < ApplicationRecord
   end
 
   def friends
-    friends_ids = accepted_friendships.pluck(:user_id, :friend_id).flatten.reject { |user_id| user_id == id }
-    User.where.not(id: id).where(id: friends_ids)
+    User.where(id: friends_ids)
+  end
+
+  def user_and_friends_posts
+    Post.where(author: friends_ids << id).order(created_at: :DESC)
+  end
+
+  private
+
+  def friends_ids
+    accepted_friendships.pluck(:user_id, :friend_id).flatten.reject { |user_id| user_id == id }
   end
 end

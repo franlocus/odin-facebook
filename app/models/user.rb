@@ -4,22 +4,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :sent_friendships, class_name: 'Friendship', foreign_key: :user_id, dependent: :destroy
-  has_many :received_friendships, class_name: 'Friendship', foreign_key: :friend_id, dependent: :destroy
+  has_many :friendships, ->(user) { sent_and_received(user.id) }, inverse_of: :user, dependent: :destroy
+  has_many :accepted_friendships, ->(user) { sent_and_received(user.id).accepted }, class_name: 'Friendship'
 
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
 
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
-
-  def friendships
-    received_friendships.or(sent_friendships)
-  end
-
-  def accepted_friendships
-    friendships.where(accepted: true)
-  end
 
   def friends
     User.where(id: friends_ids)

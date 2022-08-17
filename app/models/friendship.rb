@@ -1,6 +1,6 @@
 class Friendship < ApplicationRecord
-  belongs_to :sent_friendship, class_name: 'User', foreign_key: :user_id
-  belongs_to :received_friendship, class_name: 'User', foreign_key: :friend_id
+  belongs_to :user
+  belongs_to :friend, class_name: 'User', foreign_key: :friend_id
 
   has_many :notifications, as: :notifiable, dependent: :destroy
 
@@ -9,23 +9,26 @@ class Friendship < ApplicationRecord
   after_create :create_request_notification
   after_update :create_accepted_request_notification
 
+  scope :sent_and_received, ->(user_id) { unscope(:where).where('friend_id = :id OR user_id = :id', id: user_id) }
+  scope :accepted, -> { where accepted: true }
+
   private
 
   def create_request_notification
-    notification_body = "New Friend Request from #{sent_friendship.email}"
+    notification_body = "New Friend Request from #{user.email}"
     Notification.create(body: notification_body,
                         action: 'Friend Request',
-                        actor: sent_friendship,
-                        recipient: received_friendship,
+                        actor: user,
+                        recipient: friend,
                         notifiable: self)
   end
 
   def create_accepted_request_notification
-    notification_body = "#{received_friendship.email} accepted your friend request! Now you are friends."
+    notification_body = "#{friend.email} accepted your friend request! Now you are friends."
     Notification.create(body: notification_body,
                         action: 'Friendship',
-                        actor: received_friendship,
-                        recipient: sent_friendship,
+                        actor: friend,
+                        recipient: user,
                         notifiable: self)
   end
 end

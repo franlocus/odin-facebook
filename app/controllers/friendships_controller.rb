@@ -4,7 +4,7 @@ class FriendshipsController < ApplicationController
   before_action :prevent_cancelling_accepted_requests, only: :destroy
 
   def create
-    @friendship = current_user.sent_friendships.build(friendship_params)
+    @friendship = current_user.friendships.build(friendship_params)
 
     if @friendship.save
       flash[:notice] = 'Great, now the user must confirm your friend request'
@@ -39,7 +39,7 @@ class FriendshipsController < ApplicationController
   end
 
   def prevent_sending_request_if_have_pending_one
-    return unless current_user.received_friendships.find { |f| f.user_id == friendship_params[:friend_id] }
+    return unless current_user.friendships.find { |f| f.user_id == friendship_params[:friend_id] }
 
     redirect_to users_path, alert: 'You already have a pending request!'
   end

@@ -1,5 +1,12 @@
 <h2><%= @post.author.email %> said:</h2>
 <h4><%= @post.content %></h4>
+
+<% if @post.images.attached? %>
+  <% @post.images.each do |image| %>
+    <%= image_tag image, width: '300px' %>
+  <% end %>
+<% end %>
+
 <br>    
 Liked by -> <%= @post.likes_count.zero? ? 'nobody :(' : pluralize(@post.likes_count, 'person') %>
 

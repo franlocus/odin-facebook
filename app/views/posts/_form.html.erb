@@ -1,0 +1,18 @@
+<%= form_with model: post do |form| %>
+  <div>
+    <p>
+      <%= form.label 'Content' %><br>
+      <%= form.text_field :content %>
+        <% if flash[:post_errors] %>
+          <% flash[:post_errors].each do |error| %>
+            <p><%= error %></p>
+          <% end %>
+      <% end %>
+    </p>
+    <p>
+      <%= form.label 'Images' %>
+      <%= form.file_field :images, multiple: true %>
+    </p>
+  </div>
+  <%= form.submit %>
+<% end %>

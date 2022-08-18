@@ -3,6 +3,14 @@
     <%= post.author.email %>
     <br>
     Published -> <%= post.content %> <br>
+    <% if post.images.attached? %>
+      Images:
+      <% post.images.each do |image| %>
+        <%= image_tag image, width: '50px' %>
+      <% end %>
+      <br><br>
+    <% end %>
+
     Liked by -> <%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %>
 
     <% current_user_like_post_id = @current_user_likes_posts_ids.find { |_like_id, post_id| post_id == post.id} %>

@@ -1,24 +1,11 @@
 <h1>Posts#index</h1>
 <hr>
 
+<h2>What are you thinking?</h2>
+<p><strong>New Post</strong></p>
+<%= render 'form', post: @post %>
+
 <h2>Recent posts</h2>
 <ul>
   <%= render @posts %>
 </ul>
-
-<h2>What are you thinking?</h2>
-<%= form_with model: @post do |form| %>
-  <div>
-    <p><strong>New Post</strong></p>
-    <%= form.label 'Content' %>
-    <br>
-    <%= form.text_field :content %>
-      <% if flash[:post_errors] %>
-        <% flash[:post_errors].each do |error| %>
-          <p><%= error %></p>
-        <% end %>
-    <% end %>
-  </div>
-  <br>
-  <%= form.submit %>
-<% end %>

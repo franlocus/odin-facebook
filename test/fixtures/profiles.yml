@@ -8,7 +8,7 @@ one:
   hobbies: MyString
   interests: MyString
   description: MyString
-  user: one
+  user: first
 
 two:
   country: MyString
@@ -18,4 +18,4 @@ two:
   hobbies: MyString
   interests: MyString
   description: MyString
-  user: two
+  user: second

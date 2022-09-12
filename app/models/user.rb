@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_one :profile, dependent: :destroy
 
+  after_create { Profile.create(user: self) }
+
   def friends
     User.where(id: friends_ids)
   end

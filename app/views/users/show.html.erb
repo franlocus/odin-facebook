@@ -1,4 +1,14 @@
 <h1>Profile</h1>
+
+<ul>
+  <% current_user.profile.attributes.each do |attribute| %>
+    <% next if attribute.first.match?(/id|_at/) %>
+
+    <li><%= attribute.first.humanize %>: <%= attribute.last.nil? ? '' : attribute.last.to_s.humanize %></li>
+  <% end %>
+</ul>
+<strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile) %></strong>
+
 <h2>Your Recent posts</h2>
 <ul>
   <%= render @posts %>

@@ -28,6 +28,13 @@
     <%= form.label :description %> <br>
     <%= form.text_area :description, size: '45x10' %> 
   </div>
+  <div>
+    <%= form.label :photo %> <br>
+    <% if @profile.photo.attached? %>
+      <%= image_tag @profile.photo, width: '200px' %>  <br> 
+    <% end %>
+    <%= form.file_field :photo %> 
+  </div>
   <br>
   <%= form.submit %>
 <% end %> 

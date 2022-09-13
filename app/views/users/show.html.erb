@@ -6,6 +6,9 @@
 
     <li><%= attribute.first.humanize %>: <%= attribute.last.nil? ? '' : attribute.last.to_s.humanize %></li>
   <% end %>
+  <% if current_user.profile.photo.attached? %>
+    <li>Photo: <%= image_tag current_user.profile.photo, width: '100px' %></li>
+  <% end %>
 </ul>
 <strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile) %></strong>
 

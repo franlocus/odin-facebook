@@ -17,16 +17,16 @@ class User < ApplicationRecord
   after_create { Profile.create(user: self) }
 
   def friends
-    User.where(id: friends_ids)
+    User.where.not(id: id).where(id: user_and_friends_ids)
   end
 
   def user_and_friends_posts
-    Post.where(author: friends_ids << id).order(created_at: :DESC)
+    Post.where(author: user_and_friends_ids).order(created_at: :DESC)
   end
 
   private
 
-  def friends_ids
-    accepted_friendships.pluck(:user_id, :friend_id).flatten.reject { |user_id| user_id == id }
+  def user_and_friends_ids
+    accepted_friendships.pluck(:user_id, :friend_id).flatten
   end
 end

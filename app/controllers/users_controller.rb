@@ -6,6 +6,6 @@ class UsersController < ApplicationController
 
   def show
     @posts = current_user.posts.includes(:author, comments: :commenter).with_attached_images.order(created_at: :DESC)
-    @current_user_likes_posts_ids = current_user.likes.pluck(:id, :post_id)
+    @plucked_likes_and_posts_ids_of_user_likes = current_user.likes.pluck(:id, :post_id)
   end
 end

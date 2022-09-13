@@ -13,11 +13,11 @@
 
     Liked by -> <%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %>
 
-    <% current_user_like_post_id = @current_user_likes_posts_ids.find { |_like_id, post_id| post_id == post.id} %>
-    <% if current_user_like_post_id.nil? %> 
+    <% like_and_post_id = @plucked_likes_and_posts_ids_of_user_likes.find { |_like_id, post_id| post_id == post.id} %>
+    <% if like_and_post_id.nil? %> 
       <%= button_to 'Like', likes_path, params: { like: { post_id: post.id }}, method: :post %>
     <% else %> 
-      <%= button_to 'Unlike', like_path(current_user_like_post_id), method: :delete %>
+      <%= button_to 'Unlike', like_path(like_and_post_id), method: :delete %>
     <% end %> <br>
 
     <% if post.comments.empty? %>

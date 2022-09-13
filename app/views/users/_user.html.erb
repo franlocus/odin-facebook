@@ -1,7 +1,7 @@
 <li>
   <p>
-    <%= other_user.email %>
-    <% if (friendship = @friendships.find { |f| [current_user.id, other_user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
+    <%= user.email %>
+    <% if (friendship = @friendships.find { |f| [current_user.id, user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
       <% if friendship.accepted? %>
        <%= form_with model: friendship, method: :delete do |form| %>
          <strong>Friend</strong>
@@ -19,7 +19,7 @@
       <% end %>
     <% else %>
       <%= form_with model: Friendship.new do |form| %>
-        <%= form.hidden_field :friend_id, value: other_user.id %>
+        <%= form.hidden_field :friend_id, value: user.id %>
         <%= form.submit 'Add friend' %>
       <% end %>
     <% end %>

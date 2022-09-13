@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   def index
     @posts = current_user.user_and_friends_posts.includes(:author, :comments).with_attached_images
     @post = Post.new
-    @current_user_likes_posts_ids = current_user.likes.pluck(:id, :post_id)
+    @plucked_likes_and_posts_ids_of_user_likes = current_user.likes.pluck(:id, :post_id)
   end
 
   def show

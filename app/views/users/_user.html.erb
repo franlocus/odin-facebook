@@ -1,6 +1,6 @@
 <li>
   <p>
-    <%= user.email %>
+    <%= link_to user.email, user_path(user) %>
     <% if (friendship = @friendships.find { |f| [current_user.id, user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
       <% if friendship.accepted? %>
        <%= form_with model: friendship, method: :delete do |form| %>

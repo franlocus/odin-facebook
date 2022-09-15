@@ -1,18 +1,20 @@
-<h1>Profile</h1>
+<h1>Profile for: <%= @user.email %></h1>
 
 <ul>
-  <% current_user.profile.attributes.each do |attribute| %>
+  <% @user.profile.attributes.each do |attribute| %>
     <% next if attribute.first.match?(/id|_at/) %>
 
     <li><%= attribute.first.humanize %>: <%= attribute.last.nil? ? '' : attribute.last.to_s.humanize %></li>
   <% end %>
-  <% if current_user.profile.photo.attached? %>
-    <li>Photo: <%= image_tag current_user.profile.photo, width: '100px' %></li>
+  <% if @user.profile.photo.attached? %>
+    <li>Photo: <%= image_tag @user.profile.photo, width: '100px' %></li>
   <% end %>
 </ul>
-<strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile) %></strong>
+<% if @user == current_user %>
+  <strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile) %></strong>
+<% end %>
 
-<h2>Your Recent posts</h2>
+<h2>Recent posts</h2>
 <ul>
   <%= render @posts %>
 </ul>

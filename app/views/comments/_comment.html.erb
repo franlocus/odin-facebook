@@ -1,5 +1,6 @@
 <li>
-  <u><%= comment.commenter.email %></u>
+  <%= link_to comment.commenter.email, user_path(comment.commenter) %>
+
   commented: <br>
   <%= comment.body %>
   <% if comment.commenter == current_user %> 

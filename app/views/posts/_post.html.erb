@@ -1,6 +1,6 @@
 <li>
   <p>
-    <%= post.author.email %>
+    <%= link_to post.author.email, user_path(post.author) %>
     <br>
     Published -> <%= post.content %> <br>
     <% if post.images.attached? %>

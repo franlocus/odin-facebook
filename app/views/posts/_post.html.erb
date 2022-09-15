@@ -27,5 +27,10 @@
     <% end %> <br><br>
 
     <%= link_to '> Read post <', post_path(post) %>
+    <br>
+    <br>
+    <% if post.author == current_user %>
+      <%= button_to 'Delete post', post_path(post), method: :delete, data: { turbo_confirm: "Are you sure?" }  %>
+    <% end %>
   </p>
 </li>

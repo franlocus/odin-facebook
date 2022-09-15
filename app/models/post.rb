@@ -7,7 +7,7 @@ class Post < ApplicationRecord
   validates_presence_of :content
 
   def author_and_commenters_ids
-    commenters_ids = comments.pluck(:user_id)
+    commenters_ids = comments.distinct.pluck(:user_id)
     (commenters_ids << author.id).uniq
   end
 end

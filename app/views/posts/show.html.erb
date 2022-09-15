@@ -16,6 +16,13 @@ Liked by -> <%= @post.likes_count.zero? ? 'nobody :(' : pluralize(@post.likes_co
   <%= button_to 'Unlike', like_path(@current_user_post_like), method: :delete %>
 <% end %> <br>
 
+<% if @post.author == current_user %>
+  <h5>Unhappy with this post?</h5>
+  <%= button_to 'Delete post', post_path(@post), method: :delete, data: { turbo_confirm: "Are you sure?" }  %> 
+<% end %>
+<br>
+
+<h3>Comments:</h3>
 <% empty_comments_msg = "<p>+ This post doesn't have comments yet.<br><strong>+ You can be the first!</strong></p>" %>
 <%= render(@post.comments) || simple_format(empty_comments_msg) %>    
 

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     resource :profile, only: [:show, :edit, :update]
   end
   resources :friendships, only: [:create, :update, :destroy]
-  resources :posts, only: [:index, :show, :create]
+  resources :posts, only: [:index, :show, :create, :destroy]
   resources :likes, only: [:create, :destroy]
   resources :comments, only: [:create]
 end

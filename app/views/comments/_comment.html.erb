@@ -2,5 +2,9 @@
   <u><%= comment.commenter.email %></u>
   commented: <br>
   <%= comment.body %>
+  <% if comment.commenter == current_user %> 
+  <br>
+  <%= button_to 'Delete comment', comment_path(comment), method: :delete, data: { turbo_confirm: "Are you sure?" }  %> 
+  <% end %>
 </li>
 <br>

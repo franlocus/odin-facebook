@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_one :profile, dependent: :destroy
 
   after_create { Profile.create(user: self) }
+  after_create { UserMailer.welcome_email(self).deliver_now }
 
   def friends
     User.where.not(id: id).where(id: user_and_friends_ids)

@@ -4,7 +4,7 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many_attached :images
 
-  validates_presence_of :content
+  validates :content, presence: true, unless: proc { |post| post.images.attached? }
 
   def author_and_commenters_ids
     commenters_ids = comments.distinct.pluck(:user_id)

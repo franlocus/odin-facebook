@@ -29,6 +29,8 @@ class User < ApplicationRecord
   private
 
   def user_and_friends_ids
+    return id if accepted_friendships.empty?
+
     accepted_friendships.pluck(:user_id, :friend_id).flatten
   end
 end

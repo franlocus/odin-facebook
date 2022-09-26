@@ -1,6 +1,6 @@
   <% if flash[:comment_errors] %>
         <% flash[:comment_errors].each do |error| %>
-          <p><%= error %></p>
+          <p class="alert alert-danger"><%= error %></p>
         <% end %>
   <% end %>
   <%= form_with model: Comment.new do |form| %>

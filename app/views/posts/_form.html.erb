@@ -5,7 +5,7 @@
       <%= form.text_field :content %>
         <% if flash[:post_errors] %>
           <% flash[:post_errors].each do |error| %>
-            <p><%= error %></p>
+            <p class="alert alert-danger"><%= error %></p>
           <% end %>
       <% end %>
     </p>

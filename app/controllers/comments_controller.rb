@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_action :set_comment, only: [:destroy]
+
   def create
     @comment = current_user.comments.build(comment_params)
     if @comment.save
@@ -20,5 +22,11 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body, :post_id)
+  end
+
+  def set_comment
+    return if (@comment = Comment.find_by_id(params[:id]))
+
+    redirect_back fallback_location: root_path, alert: 'Sorry, comment not found!'
   end
 end

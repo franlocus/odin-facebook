@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :set_post, only: [:destroy]
   def index
     @posts = current_user.user_and_friends_posts.includes(:author, :comments).with_attached_images
     @post = Post.new
@@ -14,7 +15,7 @@ class PostsController < ApplicationController
     @post = current_user.posts.build(post_params)
 
     if @post.save
-      redirect_to posts_path, notice: 'Post created successfully!'
+      redirect_to @post, notice: 'Post created successfully!'
     else
       flash[:post_errors] = @post.errors.full_messages
       redirect_back fallback_location: root_path
@@ -22,15 +23,20 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post = Post.find(params[:id])
     @post.destroy
 
-    redirect_back fallback_location: root_path, notice: 'Post deleted successfully!'
+    redirect_to posts_path, notice: 'Post deleted successfully!'
   end
 
   private
 
   def post_params
     params.require(:post).permit(:content, images: [])
+  end
+
+  def set_post
+    return if (@post = Post.find_by_id(params[:id]))
+
+    redirect_to posts_path, alert: 'Sorry, post not found!'
   end
 end

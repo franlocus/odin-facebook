@@ -1,11 +1,16 @@
-<div>
-  <details>
-    <summary>[Notifications <%= @current_user_unread_notifications_count %>]</summary>
+
+
+
+<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+  Notifications <%= @current_user_unread_notifications_count %>
+</a>
+  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
     <% @current_user_notifications.each do |body, read| %>
-      <div>
-        <%= tag.strong 'Unread!' unless read %>
-        <%= body %>
-      </div>
+        
+        <li>
+          <a class="dropdown-item" href="#">
+            <%= tag.strong 'Unread!' unless read %><%= body %>
+          </a>
+        </li>
     <% end %>
-  </details>
-</div>
+  </ul>

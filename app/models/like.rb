@@ -12,7 +12,7 @@ class Like < ApplicationRecord
   def create_like_notification
     notification_body = "#{user.email} likes your post: #{post.content.truncate(37)}"
     Notification.create(body: notification_body,
-                        action: 'Like',
+                        link: "/posts/#{post.id}",
                         actor: user,
                         recipient: post.author,
                         notifiable: self)

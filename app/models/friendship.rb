@@ -2,7 +2,7 @@ class Friendship < ApplicationRecord
   belongs_to :user
   belongs_to :friend, class_name: 'User', foreign_key: :friend_id
 
-  has_many :notifications, as: :notifiable, dependent: :destroy
+  has_many :notifications, as: :notifiable
 
   validates_uniqueness_of :user_id, scope: :friend_id
 
@@ -17,7 +17,7 @@ class Friendship < ApplicationRecord
   def create_request_notification
     notification_body = "New Friend Request from #{user.email}"
     Notification.create(body: notification_body,
-                        action: 'Friend Request',
+                        link: "/users/#{user.id}",
                         actor: user,
                         recipient: friend,
                         notifiable: self)
@@ -26,7 +26,7 @@ class Friendship < ApplicationRecord
   def create_accepted_request_notification
     notification_body = "#{friend.email} accepted your friend request! Now you are friends."
     Notification.create(body: notification_body,
-                        action: 'Friendship',
+                        link: "/users/#{friend.id}",
                         actor: friend,
                         recipient: user,
                         notifiable: self)

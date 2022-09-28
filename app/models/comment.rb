@@ -15,7 +15,7 @@ class Comment < ApplicationRecord
       next if user_to_notify_id == commenter.id
 
       Notification.create(body: notification_body,
-                          action: 'Comment',
+                          link: "/posts/#{post.id}",
                           actor: commenter,
                           recipient_id: user_to_notify_id,
                           notifiable: self)

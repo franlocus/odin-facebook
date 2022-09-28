@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: [:destroy]
+  before_action :set_post, only: [:show, :destroy]
   def index
     @posts = current_user.user_and_friends_posts.includes(:author, :comments).with_attached_images
     @post = Post.new

@@ -1,18 +1,20 @@
 <%= form_with model: post do |form| %>
-  <div>
-    <p>
-      <%= form.label 'Content' %><br>
-      <%= form.text_field :content %>
+  <div class="row">
+    <div class="col-md mb-3">
+      <%= form.label :content, class: 'form-label' %><br>
+      <%= form.text_area :content, class: 'form-control' %>
         <% if flash[:post_errors] %>
           <% flash[:post_errors].each do |error| %>
-            <p class="alert alert-danger"><%= error %></p>
+            <div class="alert alert-danger"><%= error %></p>
           <% end %>
       <% end %>
-    </p>
-    <p>
-      <%= form.label 'Images' %>
-      <%= form.file_field :images, multiple: true %>
-    </p>
+    </div>
+    <div class="col-md mb-3">
+      <%= form.label :images, 'Upload images:', class: 'form-label' %>
+      <%= form.file_field :images, multiple: true, class: 'form-control' %>
+    </div>
   </div>
-  <%= form.submit %>
+  <div>
+    <%= form.submit class: "btn btn-success" %>
+  </div>
 <% end %>

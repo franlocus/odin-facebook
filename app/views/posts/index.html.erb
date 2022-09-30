@@ -1,9 +1,10 @@
-<h1>Posts#index</h1>
-<hr>
-
-<h2>What are you thinking?</h2>
-<p><strong>New Post</strong></p>
-<%= render 'form', post: @post %>
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">What are you thinking? <span class="card-subtitle mb-2 text-muted">Create a New Post</span></h5>
+    
+    <%= render 'form', post: @post %>
+  </div>
+</div>
 
 <h2>Recent posts</h2>
 <ul>

@@ -1,8 +1,11 @@
-<li>
-  <p>
-    <%= link_to post.author.email, user_path(post.author) %>
-    <br>
-    Published -> <%= post.content %> <br>
+<div class="card col-10 col-lg-6 mx-auto mb-2">
+  <div class="card-body">
+    <%= link_to post.author.email, user_path(post.author), class: 'fs-4  link-primary' %>
+    <p class="card-text">
+      <h5 class="text-decoration-underline">Content:</h5>
+      <%= post.content.truncate(300) %><br>
+      <%= link_to 'Read full post with comments', post_path(post), class: 'btn btn-primary mb-2' %>
+    </p>
     <% if post.images.attached? %>
       Images:
       <% post.images.each do |image| %>
@@ -11,26 +14,25 @@
       <br><br>
     <% end %>
 
-    Liked by -> <%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %>
+    <p><span class="fs-5 text-decoration-underline">Likes</span>:&nbsp;<%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %></p>
 
     <% like_and_post_id = @plucked_likes_and_posts_ids_of_user_likes.find { |_like_id, post_id| post_id == post.id} %>
     <% if like_and_post_id.nil? %> 
-      <%= button_to 'Like', likes_path, params: { like: { post_id: post.id }}, method: :post %>
+      <%= button_to 'Like', likes_path, params: { like: { post_id: post.id }}, method: :post, class: 'btn btn-secondary' %>
     <% else %> 
-      <%= button_to 'Unlike', like_path(like_and_post_id), method: :delete %>
+      <%= button_to 'Unlike', like_path(like_and_post_id), method: :delete, class: 'btn btn-dark' %>
     <% end %> <br>
 
-    <% if post.comments.empty? %>
-      + This post doesn't have comments yet.
-    <% else %>
-      <%= pluralize(post.comments.size, 'comment') %>
-    <% end %> <br><br>
+    <p class="text-muted fst-italic">
+      <% if post.comments.empty? %>
+        This post doesn't have comments yet.
+      <% else %>
+        <%= pluralize(post.comments.size, 'comment') %>
+      <% end %>
+    </p>
 
-    <%= link_to '> Read post <', post_path(post) %>
-    <br>
-    <br>
     <% if post.author == current_user %>
-      <%= button_to 'Delete post', post_path(post), method: :delete, data: { turbo_confirm: "Are you sure?" }  %>
+      <%= button_to 'Delete post', post_path(post), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: 'btn btn-sm btn-danger'  %>
     <% end %>
-  </p>
-</li>
+  </div>
+</div>

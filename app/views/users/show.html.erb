@@ -1,20 +1,33 @@
-<h1>Profile for: <%= @user.email %></h1>
+<div class="container-fluid">
+<h1 class="text-center">Profile <%= @user.email %></h1>
 
-<ul>
-  <% @user.profile.attributes.each do |attribute| %>
-    <% next if attribute.first.match?(/id|_at/) %>
+<h2>Information:</h2>
+  <% if @user.profile.attributes.values.compact.size == 4 %>
+    <p class="text-muted fst-italic">This user doesn't have edited his information yet.</p>
+  <% else %>
+    <ul class="list-group list-group-flush col-10 col-sm-8 col-lg-6">
+      <% if @user.profile.photo.attached? %>
+        <li class="list-group-item">
+          <h5 class="text-decoration-underline">Profile photo:</h5>
+          <%= image_tag @user.profile.photo, width: '200px' %>
+        </li>
+      <% end %>
+      <% @user.profile.attributes.each do |attribute| %>
+        <% next if attribute.first.match?(/id|_at/) || attribute.last.blank? %>
 
-    <li><%= attribute.first.humanize %>: <%= attribute.last.nil? ? '' : attribute.last.to_s.humanize %></li>
+        <li class="list-group-item">
+          <h5 class="text-decoration-underline"><%= attribute.first.humanize %>:</h5>
+          <%= attribute.last.nil? ? '' : attribute.last.to_s.humanize %>
+        </li>
+      <% end %>
+      <% if @user == current_user %>
+        <strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile), class: "mt-2 ms-2 btn btn-lg btn-warning fw-bold" %></strong>
+      <% end %>
+    </ul>
   <% end %>
-  <% if @user.profile.photo.attached? %>
-    <li>Photo: <%= image_tag @user.profile.photo, width: '100px' %></li>
-  <% end %>
-</ul>
-<% if @user == current_user %>
-  <strong><%= link_to 'Edit profile information', edit_user_profile_path(current_user.profile) %></strong>
-<% end %>
 
-<h2>Recent posts</h2>
+<h2 class="text-center">Recent posts</h2>
 <ul>
   <%= render @posts %>
 </ul>
+</div>

@@ -1,40 +1,46 @@
-<h2>Edit profile</h2>
+<div class="container-fluid pb-4">
+<h1 class="text-center">Edit profile information</h1>
+
+<div class="col-10 col-sm-8 col-lg-6">
 <%= form_with model: [:user, @profile] do |form| %>
-  <div>
-    <%= form.label :country %> <br>
-    <%= form.text_field :country %> 
-  </div>
-  <div>
-    <%= form.label :phone %> <br>
-    <%= form.text_field :phone %> 
-  </div>
-  <div>
-    <%= form.label :age %> <br>
-    <%= form.number_field :age %> 
-  </div>
-  <div>
-    <%= form.label :contact_email %> <br>
-    <%= form.email_field :contact_email %> 
-  </div>
-  <div>
-    <%= form.label :hobbies %> <br>
-    <%= form.text_field :hobbies %> 
-  </div>
-  <div>
-    <%= form.label :interests %> <br>
-    <%= form.text_field :interests %> 
-  </div>
-  <div>
-    <%= form.label :description %> <br>
-    <%= form.text_area :description, size: '45x10' %> 
-  </div>
-  <div>
-    <%= form.label :photo %> <br>
+  <div class="mb-3">
+    <%= form.label :photo, class: "form-label h5 text-decoration-underline" %> <br>
     <% if @profile.photo.attached? %>
-      <%= image_tag @profile.photo, width: '200px' %>  <br> 
+      <%= image_tag @profile.photo, width: '200px', class: 'mb-2' %>  <br> 
     <% end %>
-    <%= form.file_field :photo %> 
+    <%= form.file_field :photo, class: "form-control" %> 
   </div>
-  <br>
-  <%= form.submit %>
+  <div class="mb-3">
+    <%= form.label :country, class: "form-label h5 text-decoration-underline" %>
+    <%= form.text_field :country, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :phone, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.text_field :phone, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :age, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.number_field :age, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :contact_email, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.email_field :contact_email, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :hobbies, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.text_field :hobbies, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :interests, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.text_field :interests, class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+    <%= form.label :description, class: "form-label h5 text-decoration-underline" %> <br>
+    <%= form.text_area :description, size: '25x5', class: "form-control" %> 
+  </div>
+  <div class="mb-3">
+  <%= form.submit 'Update profile information', class: 'btn btn-success fw-bold' %>
+  </div>
 <% end %> 
+</div>
+</div>

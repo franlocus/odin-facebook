@@ -1,27 +1,39 @@
-<li>
-  <p>
-    <%= link_to user.email, user_path(user) %>
-    <% if (friendship = @friendships.find { |f| [current_user.id, user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
-      <% if friendship.accepted? %>
-       <%= form_with model: friendship, method: :delete do |form| %>
-         <strong>Friend</strong>
-         <%= form.submit 'Delete friend' %>
-        <% end %>
-      <% else %>
-        <% if should_accept = friendship.friend_id == current_user.id  %>
-          <%= form_with model: friendship do |form| %>
-            <%= form.submit 'Accept request' %>
-          <% end %>
-        <% end %>
-        <%= form_with model: friendship, method: :delete do |form| %>
-          <%= form.submit should_accept ? 'Decline request' : 'Cancel request' %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <%= form_with model: Friendship.new do |form| %>
-        <%= form.hidden_field :friend_id, value: user.id %>
-        <%= form.submit 'Add friend' %>
-      <% end %>
-    <% end %>
-  </p>
-</li>
+<div class="col">
+<div class="card mb-3 h-100" >
+  <div class="row g-0 text-center my-auto">
+    <div class="col-md-5 align-self-center ps-2">
+        <% user_photo_or_default = (user.profile.photo.attached? ? user.profile.photo : "/assets/default_profile_photo.png" ) %>
+      <%= image_tag user_photo_or_default, width: '200px', class: 'img-fluid rounded-circle mx-auto my-auto', alt: 'profile photo' %>
+    </div>
+    <div class="col-md-7">
+      <div class="card-body">
+        <h5 class="card-title"><%= link_to user.email, user_path(user) %></h5>
+         <span>
+            <% if (friendship = @friendships.find { |f| [current_user.id, user.id, f.user_id, f.friend_id].uniq.size == 2 }) %>
+              <% if friendship.accepted? %>
+              <%= form_with model: friendship, method: :delete do |form| %>
+                <span class="badge bg-dark fs-3">Friend</span>
+                <%= form.submit 'Delete friend', class: "btn btn-danger" %>
+                <% end %>
+              <% else %>
+                <% if should_accept = friendship.friend_id == current_user.id  %>
+                  <%= form_with model: friendship do |form| %>
+                    <%= form.submit 'Accept request', class: "btn btn-success mb-2" %>
+                  <% end %>
+                <% end %>
+                <%= form_with model: friendship, method: :delete do |form| %>
+                  <%= form.submit (should_accept ? 'Decline request' : 'Cancel request'), class: "btn btn-danger" %>
+                <% end %>
+              <% end %>
+            <% else %>
+              <%= form_with model: Friendship.new do |form| %>
+                <%= form.hidden_field :friend_id, value: user.id %>
+                <%= form.submit 'Add friend', class: "btn btn-primary" %>
+              <% end %>
+            <% end %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

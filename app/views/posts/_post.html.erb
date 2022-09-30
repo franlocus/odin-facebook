@@ -1,17 +1,18 @@
 <div class="card col-10 col-lg-6 mx-auto mb-2">
   <div class="card-body">
     <%= link_to post.author.email, user_path(post.author), class: 'fs-4  link-primary' %>
-    <p class="card-text">
-      <h5 class="text-decoration-underline">Content:</h5>
-      <%= post.content.truncate(300) %><br>
-      <%= link_to 'Read full post with comments', post_path(post), class: 'btn btn-primary mb-2' %>
-    </p>
+    <% unless post.content.empty? %>
+      <p class="card-text">
+        <h5 class="text-decoration-underline">Content:</h5>
+        <%= post.content.truncate(300) %><br>
+        <%= link_to 'Read full post with comments', post_path(post), class: 'btn btn-primary mb-2' %>
+      </p>
+    <% end %>
     <% if post.images.attached? %>
-      Images:
+      <p class="fs-5 text-decoration-underline">Images:</p>
       <% post.images.each do |image| %>
-        <%= image_tag image, width: '50px' %>
+        <%= image_tag image, width: '70px' %>
       <% end %>
-      <br><br>
     <% end %>
 
     <p><span class="fs-5 text-decoration-underline">Likes</span>:&nbsp;<%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %></p>

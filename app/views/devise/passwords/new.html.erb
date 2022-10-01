@@ -1,16 +1,27 @@
-<h2>Forgot your password?</h2>
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center">
+        <h1 class="display-4 fw-bold lh-1 mb-3">The Odin Project Facebook Clone</h1>
+      </div>
+      <div class="col-md-10 mx-auto col-lg-5">
+        <div class="p-4 p-md-5 border rounded-3 bg-light" data-turbo="false">
+          <h2 class="text-center">Forgot your password?</h2>
+          <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+            <div class="mb-3">
+              <%= f.label :email, 'Email address', class: 'form-label' %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'your@email.com', class: 'form-control' %>
+              <% resource.errors.full_messages_for(:email).each do |error| %>
+                  <div class="mt-2 alert alert-danger"><%= error %></div>
+              <% end %>
+            </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            <div class="actions d-grid gap-2">
+              <%= f.submit "Send me reset password instructions", class: 'btn btn-primary' %>
+              <hr class="my-4">
+            </div>
+          <% end %>
+          <%= render "devise/shared/links" %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>

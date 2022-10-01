@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  root "posts#index"
-
+  authenticated :user do
+    root :to => "posts#index"
+  end
+  unauthenticated :user do
+    devise_scope :user do
+      get "/" => "devise/sessions#new"
+    end
+  end
   devise_for :users
   resources :users, only: [:index, :show] do
     resource :profile, only: [:show, :edit, :update]

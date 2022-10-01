@@ -1,11 +1,11 @@
-  <% if flash[:comment_errors] %>
-        <% flash[:comment_errors].each do |error| %>
-          <p class="alert alert-danger"><%= error %></p>
-        <% end %>
-  <% end %>
-  <%= form_with model: Comment.new do |form| %>
-    <%= form.hidden_field :post_id, value: post.id %>
-    <%= form.label :body, 'Comment body' %> <br>
-    <%= form.text_field :body %> <br><br>
-    <%= form.submit %> 
-  <% end %>
+<%= form_with model: Comment.new do |form| %>
+  <%= form.hidden_field :post_id, value: post.id %>
+  <%= form.label :body, 'Your new comment', class: 'form-label fs-5 text-decoration-underline' %>
+  <%= form.text_area :body, class: 'form-control' %>
+    <% if flash[:comment_errors] %>
+          <% flash[:comment_errors].each do |error| %>
+            <p class="mt-2 alert alert-danger"><%= error %></p>
+          <% end %>
+    <% end %>
+  <%= form.submit class: "my-2 btn btn-success" %> 
+<% end %>

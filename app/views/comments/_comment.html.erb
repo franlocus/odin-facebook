@@ -1,11 +1,10 @@
-<li>
-  <%= link_to comment.commenter.email, user_path(comment.commenter) %>
+<div class="mb-2 border-bottom">
+  <%= link_to comment.commenter.email, user_path(comment.commenter), class: 'fs-4  link-primary' %>
+  <span class="fs-5">commented:</span>
 
-  commented: <br>
-  <%= comment.body %>
+  <p><%= comment.body %></p>
+
   <% if comment.commenter == current_user %> 
-  <br>
-  <%= button_to 'Delete comment', comment_path(comment), method: :delete, data: { turbo_confirm: "Are you sure?" }  %> 
+    <%= button_to 'Delete comment', comment_path(comment), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: 'mb-1 btn btn-sm btn-danger'  %> 
   <% end %>
-</li>
-<br>
+</div>

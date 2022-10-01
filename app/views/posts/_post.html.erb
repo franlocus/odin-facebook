@@ -5,7 +5,6 @@
       <p class="card-text">
         <h5 class="text-decoration-underline">Content:</h5>
         <%= post.content.truncate(300) %><br>
-        <%= link_to 'Read full post with comments', post_path(post), class: 'btn btn-primary mb-2' %>
       </p>
     <% end %>
     <% if post.images.attached? %>
@@ -14,6 +13,7 @@
         <%= image_tag image, width: '70px' %>
       <% end %>
     <% end %>
+    <%= link_to 'Read full post with comments', post_path(post), class: 'btn btn-primary mb-2' %>
 
     <p><span class="fs-5 text-decoration-underline">Likes</span>:&nbsp;<%= post.likes_count.zero? ? 'nobody :(' : pluralize(post.likes_count, 'person') %></p>
 

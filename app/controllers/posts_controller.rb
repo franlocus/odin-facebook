@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :destroy]
   def index
-    @posts = current_user.user_and_friends_posts.includes(:author, :comments).with_attached_images
+    @pagy, @posts = pagy(current_user.user_and_friends_posts.includes(:author, :comments).with_attached_images, items: 8)
     @post = Post.new
     @plucked_likes_and_posts_ids_of_user_likes = current_user.likes.pluck(:id, :post_id)
   end

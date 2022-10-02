@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   def index
-    @users = User.where.not(id: current_user.id)
+    @pagy, @users = pagy(User.where.not(id: current_user.id), items: 9)
     @friendships = current_user.friendships
   end
 

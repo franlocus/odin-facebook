@@ -10,5 +10,8 @@
 <% if @posts.empty?%>
   <p class="text-muted fst-italic text-center">This user doesn't have posts yet.</p>
 <% else %>
-  <div><%= render @posts %></div>
+  <div>
+    <div class="sticky-top"><%== pagy_bootstrap_nav(@pagy) %></div>
+    <div><%= render @posts %></div>
+  </div>
 <% end %>

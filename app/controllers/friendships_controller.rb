@@ -11,16 +11,15 @@ class FriendshipsController < ApplicationController
     else
       flash[:alert] = 'Sorry, the request could not be send'
     end
-    redirect_to users_path
+    redirect_to user_path(@friendship.friend_id)
   end
 
   def update
     if @friendship.update(accepted: true)
-      flash[:notice] = 'Now you are friends!'
+      redirect_to user_path(@friendship.user_id), notice: 'Now you are friends!'
     else
-      flash[:alert] = 'Sorry the request could not be accepted'
+      redirect_to users_path, alert: 'Sorry the request could not be accepted'
     end
-    redirect_to users_path
   end
 
   def destroy

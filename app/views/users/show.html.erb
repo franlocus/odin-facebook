@@ -1,6 +1,36 @@
 <div class="container-fluid">
   <h1 class="text-center">Profile <%= @user.email %></h1>
 
+  <% unless @user.id == current_user.id%>
+    <div class="card-body">
+        <h2>Friendship status:</h2>
+        <div>
+          <% if @friendship %>
+            <% if @friendship.accepted? %>
+            <%= form_with model: @friendship, method: :delete do |form| %>
+              <span class="badge bg-dark fs-3">Friend</span>
+              <%= form.submit 'Delete friend', class: "btn btn-danger" %>
+              <% end %>
+            <% else %>
+              <% if should_accept = @friendship.friend_id == current_user.id  %>
+                <%= form_with model: @friendship do |form| %>
+                  <%= form.submit 'Accept request', class: "btn btn-success mb-2" %>
+                <% end %>
+              <% end %>
+              <%= form_with model: @friendship, method: :delete do |form| %>
+                <%= form.submit (should_accept ? 'Decline request' : 'Cancel request'), class: "btn btn-danger" %>
+              <% end %>
+            <% end %>
+          <% else %>
+            <%= form_with model: Friendship.new do |form| %>
+              <%= form.hidden_field :friend_id, value: @user.id %>
+              <%= form.submit 'Add friend', class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <h2>Information:</h2>
     <% if @user.profile.attributes.values.compact.size == 4 %>
       <p class="text-muted fst-italic">This user doesn't have edited his information yet.</p>

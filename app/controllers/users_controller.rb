@@ -8,5 +8,6 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @posts = @user.posts.includes(:author, comments: :commenter).with_attached_images.order(created_at: :DESC)
     @plucked_likes_and_posts_ids_of_user_likes = current_user.likes.pluck(:id, :post_id)
+    @friendship = current_user.friendships.where('user_id = :show_user_id OR friend_id = :show_user_id', show_user_id: @user.id ).take
   end
 end

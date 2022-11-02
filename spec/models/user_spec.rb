@@ -1,59 +1,70 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  context "devise validations" do
-    it "must have a valid email format" do
-      expect { create(:user, email: 'snackeater.com') }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it "must have a password" do
-      expect { create(:user, password: '') }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it "will be created having email and password" do
-      expect { create(:user) }.to_not raise_error
+  describe 'factory' do
+    context 'when using standard factory' do
+      it { expect(build(:user)).to be_valid }
     end
   end
 
-  context 'friendships' do
-    let!(:user) { create(:user) }
-    let!(:friend) { create(:user) }
-    let!(:friendship) { create(:friendship, user:, friend:) }
-
-    it 'starts with no friendships' do
-      new_user = create(:user)
-      expect(new_user.friendships).to be_empty
+  describe 'validations' do
+    context 'when user does not have valid email format' do
+      it { expect(build(:user, email: 'snackeater.com')).not_to be_valid }
     end
 
-    it 'can have sent friendships' do
-      expect(user.friendships).to_not be_empty
-    end
-
-    it 'can have an accepted friendship if the friend accepts it' do
-      friendship.update_column(:accepted, true)
-
-      expect(user.accepted_friendships).to_not be_empty
+    context 'when user does not have valid password' do
+      it { expect(build(:user, password: '')).not_to be_valid }
     end
   end
 
-  context '#friends' do
-    let!(:user) { create(:user) }
-    let!(:friend) { create(:user) }
+  let!(:user) { create(:user) }
+  let!(:friend) { create(:user) }
+  let!(:friendship) { create(:friendship, user:, friend:) }
 
-    it 'will not have a friend until the friendship is accepted' do
-      friendship = create(:friendship, user:, friend:, accepted: false)
-      expect(user.friends).to be_empty
-      friendship.update_column(:accepted, true)
-      expect(user.friends.first).to eq(friend)
+  describe 'friendships' do
+    context 'when user signed up' do
+      it 'has no friendships' do
+        new_user = create(:user)
+        expect(new_user.friendships).to be_empty
+      end
+    end
+
+    context 'when have sent friendships' do
+      it { expect(user.friendships).not_to be_empty }
+    end
+
+    context 'when a friendship has been accepted' do
+      before do
+        friendship.update_column(:accepted, true)
+      end
+
+      it { expect(user.accepted_friendships).not_to be_empty }
     end
   end
 
-  it "has an empty profile after registration" do
-    user = create(:user)
-    user.profile.attributes.each do |name, value|
-      next if name.match?(/id|_at/)
+  describe '#friends' do
+    context 'when a friendship is not accepted' do
+      it { expect(user.friends).to be_empty }
+    end
 
-      expect(value).to be_nil
+    context 'when a friendship is accepted' do
+      before do
+        friendship.update_column(:accepted, true)
+      end
+
+      it { expect(user.friends).not_to be_empty }
+    end
+  end
+
+  describe 'profile creation callback' do
+    context 'when user signs up' do
+      it 'has a profile with empty fields' do
+        user.profile.attributes.each do |name, value|
+          next if name.match?(/id|_at/)
+
+          expect(value).to be_nil
+        end
+      end
     end
   end
 end

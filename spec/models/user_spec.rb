@@ -40,6 +40,12 @@ RSpec.describe User, type: :model do
 
       it { expect(user.accepted_friendships).not_to be_empty }
     end
+
+    context 'when user is destroyed dependent friendships too' do
+      it do
+        expect { user.destroy }.to change { friend.friendships.count }.by(-1)
+      end
+    end
   end
 
   describe '#friends' do
@@ -48,11 +54,9 @@ RSpec.describe User, type: :model do
     end
 
     context 'when a friendship is accepted' do
-      before do
-        friendship.update_column(:accepted, true)
+      it do
+        expect { friendship.update_column(:accepted, true) }.to change { user.friends } 
       end
-
-      it { expect(user.friends).not_to be_empty }
     end
   end
 
@@ -64,6 +68,21 @@ RSpec.describe User, type: :model do
 
           expect(value).to be_nil
         end
+      end
+    end
+  end
+
+  describe 'notifications' do
+    context 'when user signs up' do
+      it { expect(user.notifications).to be_empty }
+    end
+
+    context 'when receives a notification' do
+      before 'create a new friendship request to send notification' do
+        create(:friendship, user: create(:user), friend: user)
+      end
+      it 'should have one' do
+        expect(user.notifications.count).to eq(1)
       end
     end
   end

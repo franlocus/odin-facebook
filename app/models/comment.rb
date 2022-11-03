@@ -16,7 +16,6 @@ class Comment < ApplicationRecord
 
       Notification.create(body: notification_body,
                           link: "/posts/#{post.id}",
-                          actor: commenter,
                           recipient_id: user_to_notify_id,
                           notifiable: self)
     end

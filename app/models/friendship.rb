@@ -18,7 +18,6 @@ class Friendship < ApplicationRecord
     notification_body = "New Friend Request from #{user.email}"
     Notification.create(body: notification_body,
                         link: "/users/#{user.id}",
-                        actor: user,
                         recipient: friend,
                         notifiable: self)
   end
@@ -27,7 +26,6 @@ class Friendship < ApplicationRecord
     notification_body = "#{friend.email} accepted your friend request! Now you are friends."
     Notification.create(body: notification_body,
                         link: "/users/#{friend.id}",
-                        actor: friend,
                         recipient: user,
                         notifiable: self)
   end

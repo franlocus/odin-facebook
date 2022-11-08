@@ -48,6 +48,37 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'notifications' do
+    context 'when user signs up' do
+      it { expect(user.notifications).to be_empty }
+    end
+
+    context 'when receives a notification' do
+      before 'create a new friendship request to send notification' do
+        create(:friendship, user: create(:user), friend: user)
+      end
+      it 'should have one' do
+        expect(user.notifications.count).to eq(1)
+      end
+    end
+  end
+
+  describe 'posts' do
+    context 'when user creates a post' do
+      it 'should belong to him' do
+        expect(create(:post, author: user).author).to eq(user)
+      end
+    end
+
+    context 'when user is destroyed dependent posts too' do
+      it do
+        post = create(:post, author: user)
+        user.destroy
+        expect {post.reload}.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
   describe '#friends' do
     context 'when a friendship is not accepted' do
       it { expect(user.friends).to be_empty }
@@ -68,21 +99,6 @@ RSpec.describe User, type: :model do
 
           expect(value).to be_nil
         end
-      end
-    end
-  end
-
-  describe 'notifications' do
-    context 'when user signs up' do
-      it { expect(user.notifications).to be_empty }
-    end
-
-    context 'when receives a notification' do
-      before 'create a new friendship request to send notification' do
-        create(:friendship, user: create(:user), friend: user)
-      end
-      it 'should have one' do
-        expect(user.notifications.count).to eq(1)
       end
     end
   end

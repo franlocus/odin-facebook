@@ -1,25 +1,31 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe 'factory' do
-    context 'when using standard factory' do
-      it { expect(build(:user)).to be_valid }
-    end
+  subject(:user) { create(:user) }
+  let!(:friend_of_user) { create(:user) }
+  let!(:example_friendship) { create(:friendship, user:, friend: friend_of_user) }
+
+  describe 'using standard factory' do
+    it { should be_valid }
   end
 
   describe 'validations' do
-    context 'when user does not have valid email format' do
-      it { expect(build(:user, email: 'snackeater.com')).not_to be_valid }
-    end
-
-    context 'when user does not have valid password' do
-      it { expect(build(:user, password: '')).not_to be_valid }
-    end
+    it { should validate_uniqueness_of(:email).ignoring_case_sensitivity }
+    it { should allow_value('good@email.com').for(:email) }
+    it { should_not allow_value('bademail.com', '').for(:email) }
+    it { should allow_value('foobar').for(:password) }
+    it { should_not allow_value(' ').for(:password) }
   end
 
-  let!(:user) { create(:user) }
-  let!(:friend) { create(:user) }
-  let!(:friendship) { create(:friendship, user:, friend:) }
+  describe 'associations' do
+    it { should have_many(:friendships).dependent(:destroy).inverse_of(:user) }
+    it { should have_many(:accepted_friendships).class_name('Friendship') }
+    it { should have_many(:notifications).with_foreign_key(:recipient_id).dependent(:destroy) }
+    it { should have_many(:posts).dependent(:destroy) }
+    it { should have_many(:likes).dependent(:destroy) }
+    it { should have_many(:comments).dependent(:destroy) }
+    it { should have_one(:profile).dependent(:destroy) }
+  end
 
   describe 'friendships' do
     context 'when user signed up' do
@@ -35,16 +41,10 @@ RSpec.describe User, type: :model do
 
     context 'when a friendship has been accepted' do
       before do
-        friendship.update_column(:accepted, true)
+        example_friendship.update_column(:accepted, true)
       end
 
       it { expect(user.accepted_friendships).not_to be_empty }
-    end
-
-    context 'when user is destroyed dependent friendships too' do
-      it do
-        expect { user.destroy }.to change { friend.friendships.count }.by(-1)
-      end
     end
   end
 
@@ -57,48 +57,22 @@ RSpec.describe User, type: :model do
       before 'create a new friendship request to send notification' do
         create(:friendship, user: create(:user), friend: user)
       end
-      it 'should have one' do
-        expect(user.notifications.count).to eq(1)
-      end
-    end
-  end
-
-  describe 'posts' do
-    context 'when user creates a post' do
-      it 'should belong to him' do
-        expect(create(:post, author: user).author).to eq(user)
-      end
-    end
-
-    context 'when user is destroyed dependent posts too' do
-      it do
-        post = create(:post, author: user)
-        user.destroy
-        expect {post.reload}.to raise_error(ActiveRecord::RecordNotFound)
-      end
+      it { expect(user.notifications.count).to eq(1) }
     end
   end
 
   describe '#friends' do
-    context 'when a friendship is not accepted' do
+    it 'should not be present in his friends list' do
+      expect(user.friends).to_not eq([user])
+    end
+    context 'when no friendship is accepted' do
       it { expect(user.friends).to be_empty }
     end
 
     context 'when a friendship is accepted' do
       it do
-        expect { friendship.update_column(:accepted, true) }.to change { user.friends } 
-      end
-    end
-  end
-
-  describe 'profile creation callback' do
-    context 'when user signs up' do
-      it 'has a profile with empty fields' do
-        user.profile.attributes.each do |name, value|
-          next if name.match?(/id|_at/)
-
-          expect(value).to be_nil
-        end
+        example_friendship.update_column(:accepted, true)
+        expect(user.friends.count).to eq(1)
       end
     end
   end

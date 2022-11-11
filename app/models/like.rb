@@ -1,7 +1,7 @@
 class Like < ApplicationRecord
   belongs_to :user
   belongs_to :post, counter_cache: true
-  has_many :notifications, as: :notifiable
+  has_one :notification, as: :notifiable
 
   validates_uniqueness_of :user_id, scope: :post_id
 

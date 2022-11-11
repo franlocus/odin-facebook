@@ -18,11 +18,11 @@ RSpec.describe Friendship, type: :model do
   end
 
   describe 'notifications creation callbacks' do
-    context 'when it is created should also create a new request notification' do
+    context 'when it is created should create a new request notification' do
       it { expect(friendship.notifications.first.body).to match(/New Friend Request/) }
     end
 
-    context 'when it is created should also create an accepted request notification' do
+    context 'when it is updated should create an accepted request notification' do
       before { friendship.update(accepted: true) }
 
       it { expect(friendship.notifications.last.body).to match(/accepted your friend request/) }

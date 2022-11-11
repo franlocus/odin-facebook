@@ -9,18 +9,16 @@ RSpec.describe Notification, type: :model do
     end
   end
 
-  describe 'belongs to recipient ' do
-    context 'when doesnt have recipient' do
-      it { expect(build(:notification, recipient: nil)).not_to be_valid }
-    end
+  describe 'associations' do
+    it { should belong_to(:recipient).class_name('User') }
+    it { should belong_to(:notifiable) }
+  end
 
-    context 'when recipient is destroyed' do
-      it 'should be destroyed too' do
-        recipient = create(:user)
-        notification = create(:notification, :for_friendship, recipient:)
-        recipient.destroy
-        expect { notification.reload }.to raise_error(ActiveRecord::RecordNotFound)
-      end
+  describe 'scope unread' do
+    it do
+      example_unread_notification = create(:notification, :for_friendship)
+
+      expect(Notification.unread).to include(example_unread_notification)
     end
   end
 end

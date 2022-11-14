@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :email, format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i, message: 'is invalid' }
+
   has_many :friendships, ->(user) { sent_and_received(user.id) }, inverse_of: :user, dependent: :destroy
   has_many :accepted_friendships, ->(user) { sent_and_received(user.id).accepted }, class_name: 'Friendship'
 

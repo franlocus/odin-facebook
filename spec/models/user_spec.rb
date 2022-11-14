@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
   describe 'validations' do
     it { should validate_uniqueness_of(:email).ignoring_case_sensitivity }
     it { should allow_value('good@email.com').for(:email) }
-    it { should_not allow_value('bademail.com', '').for(:email) }
+    it { should_not allow_value('bademail.com', '', 'foo@bar').for(:email) }
     it { should allow_value('foobar').for(:password) }
     it { should_not allow_value(' ').for(:password) }
   end

@@ -1,6 +1,6 @@
 class FriendshipsController < ApplicationController
-  before_action :prevent_sending_request_if_have_pending_one, only: :create
-  before_action :set_friendship, only: [:update, :destroy]
+  before_action :find_user_to_send_friendship, :prevent_sending_request_if_has_pending_one, only: :create
+  before_action :set_friendship, only: %i[update destroy]
   before_action :prevent_cancelling_accepted_requests, only: :destroy
 
   def create
@@ -8,10 +8,11 @@ class FriendshipsController < ApplicationController
 
     if @friendship.save
       flash[:notice] = 'Great, now the user must confirm your friend request'
+      redirect_to user_path(@friendship.friend_id)
     else
       flash[:alert] = 'Sorry, the request could not be send'
+      redirect_back fallback_location: users_path
     end
-    redirect_to user_path(@friendship.friend_id)
   end
 
   def update
@@ -37,8 +38,14 @@ class FriendshipsController < ApplicationController
     params.require(:friendship).permit(:friend_id)
   end
 
-  def prevent_sending_request_if_have_pending_one
-    return unless current_user.friendships.find { |f| f.user_id == friendship_params[:friend_id] }
+  def find_user_to_send_friendship
+    return if (@user_to_send_friendship = User.find_by_id(friendship_params[:friend_id]))
+
+    redirect_to users_path, alert: 'Sorry, user not found!'
+  end
+
+  def prevent_sending_request_if_has_pending_one
+    return unless @user_to_send_friendship.friendships.find { |f| f.friend_id == current_user.id }
 
     redirect_to users_path, alert: 'You already have a pending request!'
   end

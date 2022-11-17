@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "Delete friend", type: :feature do
+RSpec.feature 'Delete friend', type: :feature do
   let!(:user) { create(:user) }
   let!(:friend) { create(:user) }
   let!(:friendship) { create(:friendship, user:, friend:, accepted: true) }

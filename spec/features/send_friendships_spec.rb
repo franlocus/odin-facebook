@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.feature "Send friendships", type: :feature do
+RSpec.feature 'Send friendships', type: :feature do
   let!(:user) { create(:user) }
   let!(:friend) { create(:user) }
 

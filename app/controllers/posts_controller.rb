@@ -25,7 +25,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
 
-    redirect_to posts_path, notice: 'Post deleted successfully!'
+    redirect_to posts_path, notice: 'Post deleted successfully!', status: :see_other
   end
 
   private
@@ -37,6 +37,6 @@ class PostsController < ApplicationController
   def set_post
     return if (@post = Post.find_by_id(params[:id]))
 
-    redirect_to posts_path, alert: 'Sorry, post not found!'
+    redirect_to posts_path, alert: 'Sorry, post not found!', status: :see_other
   end
 end

@@ -36,14 +36,19 @@ RSpec.feature 'Posts', type: :feature do
     expect(page).to have_content("Content can't be blank")
   end
 
-  scenario 'can delete his post' do
-    click_on 'Delete post'
+  scenario 'can delete his post', js: true do
+    refresh
+    accept_confirm do
+      click_on 'Delete post'
+    end
     expect(page).to have_content('Post deleted successfully!')
   end
 
-  scenario 'can not delete an already deleted post' do
+  scenario 'can not delete an already deleted post', js: true do
     post.destroy
-    click_on 'Delete post'
+    accept_confirm do
+      click_on 'Delete post'
+    end
     expect(page).to have_content('Sorry, post not found!')
   end
 

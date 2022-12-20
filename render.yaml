@@ -1,0 +1,18 @@
+databases:
+  - name: odin-facebook
+    databaseName: odin-facebook
+    user: odin-facebook
+
+services:
+  - type: web
+    name: odin-facebook
+    env: ruby
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: odin-facebook
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false

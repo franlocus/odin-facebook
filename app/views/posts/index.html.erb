@@ -11,7 +11,10 @@
   <p class="text-muted fst-italic text-center">This user doesn't have posts yet.</p>
 <% else %>
   <div>
-    <div class="sticky-top"><%== pagy_bootstrap_nav(@pagy) %></div>
-    <div><%= render @posts %></div>
+    <!-- Using Turbo Frames for posts pagination -->
+    <%= turbo_frame_tag "recent-posts", autoscroll: "true" do %>
+      <div class="sticky-top"><%== pagy_bootstrap_nav(@pagy, link_extra: 'data-turbo-action="advance"' ) %></div>
+      <%= render @posts %>
+    <% end %>
   </div>
 <% end %>

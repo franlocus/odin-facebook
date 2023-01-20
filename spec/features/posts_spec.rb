@@ -37,7 +37,6 @@ RSpec.feature 'Posts', type: :feature do
   end
 
   scenario 'can delete his post', js: true do
-    refresh
     accept_confirm do
       click_on 'Delete post'
     end

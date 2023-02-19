@@ -264,8 +264,7 @@ Devise.setup do |config|
   #
   # The "*/*" below is required to match Internet Explorer requests.
 
-  # Add turbo_stream to work properly with Rails 7, not by default
-  config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.navigational_formats = ['*/*', :html]
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -310,4 +309,8 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  
+  # Upgrade to Devise 4.9.0 [Hotwire Turbo integration]
+  config.responder.error_status = :unprocessable_entity
+  config.responder.redirect_status = :see_other
 end

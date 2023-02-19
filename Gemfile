@@ -48,7 +48,7 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 
 # Use Devise to manage authentications
-gem 'devise', '~> 4.8'
+gem 'devise'
 
 gem 'bootstrap', '~> 5.2'
 
